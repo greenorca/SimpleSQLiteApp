@@ -128,10 +128,30 @@ public class MainActivity extends AppCompatActivity {
      */
     public void updateProduct(View view){
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
-        boolean isNewProduct = currentProduct.getProductName()==null || currentProduct.getProductName().equals("");
-        int quantity = Integer.parseInt(quantityBox.getText().toString());
+        boolean isNewProduct = currentProduct.getProductName()==null ||
+                currentProduct.getProductName().equals("");
+        int quantity = 0;
+        try {
+            Log.d(LOGTAG, "Quantity_txt: "+quantityBox.getText().toString());
+            quantity = Integer.parseInt(quantityBox.getText().toString());
+            Log.d(LOGTAG, "Quantity_int: "+quantity);
+            Log.d(LOGTAG, "Quantity_txt: "+quantityBox.getText().toString());
+            if (quantity < 0){
+                Toast.makeText(this, "Error, quantity must be at least 0", Toast.LENGTH_LONG).show();
+                quantityBox.setError("quantity must be greater or equal 0");
+                return;
+            }
+        } catch(NumberFormatException ex){
+            quantityBox.setError("quantity must be greater or equal 0");
+            return;
+        }
         currentProduct.setQuantity(quantity);
-        currentProduct.setProductName(productBox.getText().toString());
+        String productName = productBox.getText().toString();
+        if (productName.trim().length()<1){
+            productBox.setError("invalid name: "+productName);
+            return;
+        }
+        currentProduct.setProductName(productName);
         if (!isNewProduct)
             dbHandler.updateProduct(currentProduct);
         else
