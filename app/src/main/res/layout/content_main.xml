@@ -104,7 +104,7 @@
                     style="@style/BoldFont"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Komplette Produktbeschreibung" />
+                    android:text="Description" />
 
                 <EditText
                     android:id="@+id/editText3"
